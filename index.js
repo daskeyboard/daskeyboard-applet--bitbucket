@@ -68,17 +68,19 @@ class Bitbucket extends q.DesktopApp {
 
         logger.info("This is a project: "+JSON.stringify(project));
 
-        // if(project.updated_at > this.updated_at[project.name]){
+        if(project.updated_on > this.updated_on[project.name]){
 
         //   // Need to send a signal         
         //   triggered=true;
-        //   logger.info("Got an update in:" + project.name);
+        logger.info("Got an update in: " + project.name);
 
         //   // Need to update the time of the project which got an update
         //   this.updated_at[project.name] = project.updated_at;
 
         //   // Update signal's message
         //   message.push(`Update in ${project.name} project.`);
+
+        logger.info("This is the link: " + project.links.html.href);
 
         //   // Update url:
         //   // if there are several notifications on different projects:
@@ -90,7 +92,7 @@ class Bitbucket extends q.DesktopApp {
         //   }
         //   notification = notification +1;
 
-        // }
+         }
 
       }
 
