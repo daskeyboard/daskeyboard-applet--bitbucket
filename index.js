@@ -27,9 +27,11 @@ class Bitbucket extends q.DesktopApp {
 
         logger.info("Let's configure the project table by getting the time.");
 
-        for (let project of projects) {
+        logger.info("Response projects: "+JSON.stringify(projects));
+
+        for (let project of projects.values) {
           // Get update_at for each project
-          this.updated_at[project.name] = project.updated_at;
+          this.updated_at[project.name] = project.updated_on;
         }
 
       })
@@ -39,14 +41,14 @@ class Bitbucket extends q.DesktopApp {
       });
 
     }else{
-      logger.info("UserId is not defined.");
+      logger.info("UserName is not defined.");
     }
 
   }
 
   // Get all the user projects
   async getAllProjects() {
-    const query = `/${this.userName}/projects.json`;
+    const query = `/repositories/${this.userName}`;
     const proxyRequest = new q.Oauth2ProxyRequest({
       apiKey: this.authorization.apiKey,
       uri: queryUrlBase + query
@@ -62,31 +64,33 @@ class Bitbucket extends q.DesktopApp {
       this.url = "";
       var notification = 0;
 
-      for (let project of projects) {
+      for (let project of projects.values) {
 
-        if(project.updated_at > this.updated_at[project.name]){
+        logger.info("This is a project: "+JSON.stringify(project));
 
-          // Need to send a signal         
-          triggered=true;
-          logger.info("Got an update in:" + project.name);
+        // if(project.updated_at > this.updated_at[project.name]){
 
-          // Need to update the time of the project which got an update
-          this.updated_at[project.name] = project.updated_at;
+        //   // Need to send a signal         
+        //   triggered=true;
+        //   logger.info("Got an update in:" + project.name);
 
-          // Update signal's message
-          message.push(`Update in ${project.name} project.`);
+        //   // Need to update the time of the project which got an update
+        //   this.updated_at[project.name] = project.updated_at;
 
-          // Update url:
-          // if there are several notifications on different projects:
-          // the url needs to redirect on the projects page
-          if(notification >= 1){
-            this.url = `https://3.basecamp.com/${this.userName}/projects/`;
-          }else{
-            this.url = project.app_url;
-          }
-          notification = notification +1;
+        //   // Update signal's message
+        //   message.push(`Update in ${project.name} project.`);
 
-        }
+        //   // Update url:
+        //   // if there are several notifications on different projects:
+        //   // the url needs to redirect on the projects page
+        //   if(notification >= 1){
+        //     this.url = `https://3.basecamp.com/${this.userName}/projects/`;
+        //   }else{
+        //     this.url = project.app_url;
+        //   }
+        //   notification = notification +1;
+
+        // }
 
       }
 
