@@ -34,7 +34,7 @@ class Bitbucket extends q.DesktopApp {
           this.updated_on[project.name] = project.updated_on;
         }
 
-        logger.info("This is the initialized board: "+JSON.stringify(this.updated_at));
+        logger.info("This is the initialised board: "+JSON.stringify(this.updated_at));
 
       })
       .catch(error => {
