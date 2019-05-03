@@ -42,8 +42,8 @@
     },
     "questions": [
       {
-        "key": "userId",
-        "label": "User ID",
+        "key": "userName",
+        "label": "User Name",
         "help": "Login to your BaseCamp account then copy the numbers after the basecamp.com/ e.g: https://3.basecamp.com/<YOUR_REPO_ID>/projects",
         "supportUrl": "https://launchpad.37signals.com/signin",
         "required": true,
