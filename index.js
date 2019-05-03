@@ -34,6 +34,8 @@ class Bitbucket extends q.DesktopApp {
           this.updated_at[project.name] = project.updated_on;
         }
 
+        logger.info("This is the initialized board: "+JSON.stringify(this.updated_at));
+
       })
       .catch(error => {
         logger.error(
@@ -67,9 +69,9 @@ class Bitbucket extends q.DesktopApp {
       for (let project of projects.values) {
 
         logger.info("This is a project: "+JSON.stringify(project));
-        logger.info("This is the time before: "+JSON.stringify(this.updated_on[project.name]));
-        logger.info("This is the time after: "+JSON.stringify(project.updated_on));
-        logger.info("====");
+        // logger.info("This is the time before: "+JSON.stringify(this.updated_on[project.name]));
+        // logger.info("This is the time after: "+JSON.stringify(project.updated_on));
+        // logger.info("====");
 
         if(project.updated_on > this.updated_on[project.name]){
 
