@@ -1,9 +1,9 @@
 # Bitbucket
 
-Displays Bitbucket 3 projects activities (new tasks, messages, meetings, etc.) on a Das Keyboard Q Series.
+Displays Bitbucket projects activities (updates, pull requests, etc.) on a Das Keyboard Q Series.
 
-Bitbucket is a project management tool, helping to manage
-projects and collaborate with clients.
+Bitbucket is our Git repository management solution designed for professional teams.
+It gives you a central place to manage git repositories, collaborate on your source code
 
 For more information about Bitbucket visit <https://www.bitbucket.com>.
 
