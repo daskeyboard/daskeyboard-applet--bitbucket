@@ -68,10 +68,11 @@ class Bitbucket extends q.DesktopApp {
 
       for (let project of projects.values) {
 
-        logger.info("This is a project: "+JSON.stringify(project));
-        logger.info("This is the time before: "+JSON.stringify(this.updated_on[project.name]));
-        logger.info("This is the time after: "+JSON.stringify(project.updated_on));
-        logger.info("====");
+        // If there is a new created project (means board equals to undefined)
+        // We initialise the project's date
+        if(!this.updated_on[project.name]){
+          this.updated_on[project.name] = project.updated_on;
+        }
 
         if(project.updated_on > this.updated_on[project.name]){
 
@@ -80,8 +81,8 @@ class Bitbucket extends q.DesktopApp {
 
         logger.info("Got an update in: " + JSON.stringify(project.name));
 
-        //   // Need to update the time of the project which got an update
-        //   this.updated_at[project.name] = project.updated_at;
+        // Need to update the time of the project which got an update
+        this.updated_at[project.name] = project.updated_at;
 
         // Update signal's message
         message.push(`Update in ${project.name} project.`);
