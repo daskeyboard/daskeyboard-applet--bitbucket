@@ -44,10 +44,10 @@
       {
         "key": "userName",
         "label": "User Name",
-        "help": "Login to your BaseCamp account then copy the numbers after the basecamp.com/ e.g: https://3.basecamp.com/<YOUR_REPO_ID>/projects",
-        "supportUrl": "https://launchpad.37signals.com/signin",
+        "help": "Login to your Bitbucket account. Go to settings and copy the username.",
+        "supportUrl": "https://bitbucket.org",
         "required": true,
-        "placeholder": "e.g: 7452696",
+        "placeholder": "e.g: JohnDoe",
         "order": 1,
         "controlType": "textbox"
       },
