@@ -1,7 +1,7 @@
 const q = require('daskeyboard-applet');
 
 const logger = q.logger;
-const queryUrlBase = 'https://3.basecampapi.com';
+const queryUrlBase = 'https://api.bitbucket.org/2.0';
 
 class Bitbucket extends q.DesktopApp {
   constructor() {
@@ -17,10 +17,10 @@ class Bitbucket extends q.DesktopApp {
     this.updated_at = {};
 
     // User ID
-    this.userId = this.config.userId;
+    this.userName = this.config.userName;
 
-    // Only if userId is definded
-    if(this.userId){
+    // Only if userName is definded
+    if(this.userName){
 
       // first get all the user projects
       await this.getAllProjects().then((projects) => {
@@ -46,7 +46,7 @@ class Bitbucket extends q.DesktopApp {
 
   // Get all the user projects
   async getAllProjects() {
-    const query = `/${this.userId}/projects.json`;
+    const query = `/${this.userName}/projects.json`;
     const proxyRequest = new q.Oauth2ProxyRequest({
       apiKey: this.authorization.apiKey,
       uri: queryUrlBase + query
@@ -80,7 +80,7 @@ class Bitbucket extends q.DesktopApp {
           // if there are several notifications on different projects:
           // the url needs to redirect on the projects page
           if(notification >= 1){
-            this.url = `https://3.basecamp.com/${this.userId}/projects/`;
+            this.url = `https://3.basecamp.com/${this.userName}/projects/`;
           }else{
             this.url = project.app_url;
           }
