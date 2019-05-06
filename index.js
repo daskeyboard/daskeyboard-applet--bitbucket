@@ -135,18 +135,19 @@ class Bitbucket extends q.DesktopApp {
           logger.info("Old pull request number: "+this.pullrequestNumber[project.name]);
 
           // If there is a pull request at least
-          if(body.size != this.pullrequestNumber[project.name]){
+          if(body.size > this.pullrequestNumber[project.name]){
             logger.info("New pull request.");
             // Need to send a signal         
             triggered=true;
-            // Need to update value
-            this.pullrequestNumber[project.name] = body.size;
             // Update signal's message
             message.push(`New pull request in ${project.name} project.`);
             // Need to update link
             logger.info("This is the link: " + JSON.stringify(body.values[0].links.html));
             this.url = body.values[0].links.html;
           }
+
+          // Need to update value
+          this.pullrequestNumber[project.name] = body.size;
          }
 
       }
