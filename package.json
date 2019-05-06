@@ -52,11 +52,18 @@
         "controlType": "textbox"
       },
       {
+        "key": "pullRequests",
+        "label": "Pull request",
+        "order": 2,
+        "required": false,
+        "controlType": "checkbox"
+      },
+      {
         "key": "color",
         "label": "Choose the color of the reminder",
         "help": "",
         "required": true,
-        "order": 2,
+        "order": 3,
         "value": "#0747a6",
         "controlType": "color"
       },
@@ -65,7 +72,7 @@
         "label": "Choose the effect of the reminder",
         "help": "",
         "required": true,
-        "order": 3,
+        "order": 4,
         "value": "BLINK",
         "controlType": "effect"
       }
