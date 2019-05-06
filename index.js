@@ -58,6 +58,17 @@ class Bitbucket extends q.DesktopApp {
     return this.oauth2ProxyRequest(proxyRequest);
   }
 
+  // Get the pull request
+  async getPullRequests(repoSlug) {
+    const query = `/repositories/${this.userName}/${repoSlug}/pullrequests`;
+    logger.info("This is the query: "+query);
+    const proxyRequest = new q.Oauth2ProxyRequest({
+      apiKey: this.authorization.apiKey,
+      uri: queryUrlBase + query
+    });
+    return this.oauth2ProxyRequest(proxyRequest);
+  }
+
   async run() {
     logger.info("Bitbucket running.");
     return this.getAllProjects().then(projects => {
@@ -74,35 +85,50 @@ class Bitbucket extends q.DesktopApp {
           this.updated_on[project.name] = project.updated_on;
         }
 
+        // Test if a project has been updated
         if(project.updated_on > this.updated_on[project.name]){
 
-        // Need to send a signal         
-        triggered=true;
+          // Need to send a signal         
+          triggered=true;
 
-        logger.info("Got an update in: " + JSON.stringify(project.name));
+          logger.info("Got an update in: " + JSON.stringify(project.name));
 
-        // Need to update the time of the project which got an update
-        this.updated_at[project.name] = project.updated_at;
+          // Need to update the time of the project which got an update
+          this.updated_at[project.name] = project.updated_at;
 
-        // Update signal's message
-        message.push(`Update in ${project.name} project.`);
+          // Update signal's message
+          message.push(`Update in ${project.name} project.`);
 
-        logger.info("This is the link: " + project.links.html.href);
-        this.url = project.links.html.href;
+          logger.info("This is the link: " + project.links.html.href);
+          this.url = project.links.html.href;
 
-        //   // Update url:
-        //   // if there are several notifications on different projects:
-        //   // the url needs to redirect on the projects page
-        //   if(notification >= 1){
-        //     this.url = `https://3.basecamp.com/${this.userName}/projects/`;
-        //   }else{
-        //     this.url = project.app_url;
-        //   }
-        //   notification = notification +1;
+          //   // Update url:
+          //   // if there are several notifications on different projects:
+          //   // the url needs to redirect on the projects page
+          //   if(notification >= 1){
+          //     this.url = `https://3.basecamp.com/${this.userName}/projects/`;
+          //   }else{
+          //     this.url = project.app_url;
+          //   }
+          //   notification = notification +1;
+
+         }
+
+         // Test if there is a new pull request
+         if(this.config["pullRequests"]){
+          body = await this.getPullRequests(project.slug);
+          if(body.values != "[]"){
+            if(body.values.created_on == body.values.updated_on){
+              logger.info("NEW PULL REQUEST.");
+            }
+          }else{
+            logger.info("Pull request body empty.");
+          }
 
          }
 
       }
+
 
       if (triggered) {
         return new q.Signal({
