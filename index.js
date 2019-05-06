@@ -71,7 +71,7 @@ class Bitbucket extends q.DesktopApp {
 
   async run() {
     logger.info("Bitbucket running.");
-    return this.getAllProjects().then(projects => {
+    return this.getAllProjects().then(async projects => {
       let triggered = false;
       let message = [];
       this.url = "";
