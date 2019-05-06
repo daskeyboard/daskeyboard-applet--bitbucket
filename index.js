@@ -131,9 +131,10 @@ class Bitbucket extends q.DesktopApp {
          // Test if there is a new pull request
          if(this.config["pullRequests"]){
           body = await this.getPullRequests(project.slug);
-          logger.info("This is the response for the pull requests number: "+JSON.stringify(body));
+          logger.info("This is the response for the pull requests number: "+JSON.stringify(body.size));
           // If there is a pull request at least
           if(body.size!=0){
+            logger.info("body size != zero ");
             if(body.size != this.pullrequestNumber[project.name]){
               logger.info("New pull request.");
               // Need to send a signal         
