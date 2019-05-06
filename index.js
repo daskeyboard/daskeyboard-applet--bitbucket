@@ -23,7 +23,7 @@ class Bitbucket extends q.DesktopApp {
     if(this.userName){
 
       // first get all the user projects
-      await this.getAllProjects().then((projects) => {
+      await this.getAllProjects().then(async projects => {
 
         logger.info("Let's configure the project table by getting the time.");
 
@@ -32,9 +32,21 @@ class Bitbucket extends q.DesktopApp {
         for (let project of projects.values) {
           // Get update_at for each project
           this.updated_on[project.name] = project.updated_on;
+
+          // Initialise pull requests number
+          if(this.config["pullRequests"]){
+            await this.getPullRequests(project.slug).then(pullrequest => {
+              this.pullrequestNumber[project.name] = pullrequest.size;
+            });
+          }
         }
 
-        logger.info("This is the initialised board: "+JSON.stringify(this.updated_at));
+        logger.info("This is the initialised updated_on board: "+JSON.stringify(this.updated_at));
+
+        if(this.config["pullRequests"]){
+          logger.info("This is the pull request number board: "+JSON.stringify(this.pullrequestNumber));
+        }
+
 
       })
       .catch(error => {
@@ -118,22 +130,21 @@ class Bitbucket extends q.DesktopApp {
          // Test if there is a new pull request
          if(this.config["pullRequests"]){
           body = await this.getPullRequests(project.slug);
-          logger.info("This is the response body: "+JSON.stringify(body));
-          logger.info("body.values: "+JSON.stringify(body.values));
-          if(body.values.length==0){
-            logger.info("Pull request body empty.");
-          }else{
-            for(let pullrequest of body.values){
-              // Need to create a board with all values
-              if(pullrequest.created_on.substring(0,19) == pullrequest.updated_on.substring(0,19)){
-                logger.info("New pull request.");
-              }
-              if(pullrequest.created_on.substring(0,19) < pullrequest.updated_on.substring(0,19)){
-                logger.info("Updated pull request.");
-              }
+          logger.info("This is the response for the pull requests number: "+JSON.stringify(body));
+          // If there is a pull request at least
+          if(body.size!=0){
+            if(body.size != this.pullrequestNumber[project.name]){
+              logger.info("New pull request.");
+              // Need to send a signal         
+              triggered=true;
+              // Need to update value
+              this.pullrequestNumber[project.name] = body.size;
+              // Update signal's message
+              message.push(`New pull request in ${project.name} project.`);
+              // Need to update link
+              logger.info("This is the link: " + body.values[0].links.html);
             }
           }
-
          }
 
       }
