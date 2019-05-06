@@ -118,12 +118,13 @@ class Bitbucket extends q.DesktopApp {
          // Test if there is a new pull request
          if(this.config["pullRequests"]){
           body = await this.getPullRequests(project.slug);
-          if(body.values != "[]"){
-            if(body.values.created_on == body.values.updated_on){
+          logger.info("This is the response body: "+JSON.stringify(body));
+          if(body.values == "[]"){
+            logger.info("Pull request body empty.");
+          }else{
+            if(body.values.created_on === body.values.updated_on){
               logger.info("NEW PULL REQUEST.");
             }
-          }else{
-            logger.info("Pull request body empty.");
           }
 
          }
