@@ -15,6 +15,7 @@ class Bitbucket extends q.DesktopApp {
 
     // Array to keep in mind the projects name and update date.
     this.updated_on = {};
+    this.pullrequestNumber = {};
 
     // User Name
     this.userName = this.config.userName;
