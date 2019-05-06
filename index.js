@@ -74,6 +74,7 @@ class Bitbucket extends q.DesktopApp {
     return this.getAllProjects().then(async projects => {
       let triggered = false;
       let message = [];
+      let body;
       this.url = "";
       var notification = 0;
 
