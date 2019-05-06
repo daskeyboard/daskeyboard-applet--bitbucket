@@ -119,7 +119,7 @@ class Bitbucket extends q.DesktopApp {
          if(this.config["pullRequests"]){
           body = await this.getPullRequests(project.slug);
           logger.info("This is the response body: "+JSON.stringify(body));
-          logger.info("body.values: "+body.values);
+          logger.info("body.values: "+JSON.stringify(body.values));
           if(body.values.length==0){
             logger.info("Pull request body empty.");
           }else{
