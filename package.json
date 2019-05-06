@@ -57,7 +57,7 @@
         "help": "",
         "required": true,
         "order": 2,
-        "value": "#FFFF00",
+        "value": "#0747a6",
         "controlType": "color"
       },
       {
