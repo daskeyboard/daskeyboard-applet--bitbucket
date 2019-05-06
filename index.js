@@ -95,7 +95,7 @@ class Bitbucket extends q.DesktopApp {
           logger.info("Got an update in: " + JSON.stringify(project.name));
 
           // Need to update the time of the project which got an update
-          this.updated_at[project.name] = project.updated_at;
+          this.updated_on[project.name] = project.updated_on;
 
           // Update signal's message
           message.push(`Update in ${project.name} project.`);
@@ -126,6 +126,7 @@ class Bitbucket extends q.DesktopApp {
             for(let pullrequest of body.values){
               logger.info("created_on: "+pullrequest.created_on);
               logger.info("updated_on: "+pullrequest.updated_on);
+              // Need to get time instead
               if(pullrequest.created_on == pullrequest.updated_on){
                 logger.info("NEW PULL REQUEST.");
               }
