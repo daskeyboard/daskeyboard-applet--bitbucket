@@ -31,7 +31,7 @@ class Bitbucket extends q.DesktopApp {
         logger.info("Response projects: "+JSON.stringify(projects));
 
         for (let project of projects.values) {
-          // Get update_at for each project
+          // Get update_on for each project
           this.updated_on[project.name] = project.updated_on;
 
           // Initialise pull requests number
@@ -42,7 +42,7 @@ class Bitbucket extends q.DesktopApp {
           }
         }
 
-        logger.info("This is the initialised updated_on board: "+JSON.stringify(this.updated_at));
+        logger.info("This is the initialised updated_on board: "+JSON.stringify(this.updated_on));
 
         if(this.config["pullRequests"]){
           logger.info("This is the pull request number board: "+JSON.stringify(this.pullrequestNumber));
