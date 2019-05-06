@@ -124,8 +124,8 @@ class Bitbucket extends q.DesktopApp {
             logger.info("Pull request body empty.");
           }else{
             for(let pullrequest of body.values){
-              logger.info("created_on: "+pullrequest.created_on);
-              logger.info("updated_on: "+pullrequest.updated_on);
+              logger.info("created_on: "+pullrequest.created_on.substring(0,19));
+              logger.info("updated_on: "+pullrequest.updated_on.substring(0,19));
               // Need to get time instead
               if(pullrequest.created_on == pullrequest.updated_on){
                 logger.info("NEW PULL REQUEST.");
