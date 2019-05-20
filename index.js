@@ -99,6 +99,8 @@ class Bitbucket extends q.DesktopApp {
           this.updated_on[project.name] = project.updated_on;
         }
 
+        logger.info("Testing update on: "+JSON.stringify(project.name));
+
         // Test if a project has been updated
         if(project.updated_on > this.updated_on[project.name]){
 
@@ -173,13 +175,15 @@ class Bitbucket extends q.DesktopApp {
       logger.error(
         `Got error sending request to service: ${JSON.stringify(error)}`);
       if(`${error.message}`.includes("getaddrinfo")){
-        return q.Signal.error(
-          'The Bitbucket service returned an error. <b>Please check your internet connection</b>.'
-        );
+        // Do not send signal error when getting internet connection error.
+        // return q.Signal.error(
+        //   'The Bitbucket service returned an error. <b>Please check your internet connection</b>.'
+        // );
+      }else{
+        return q.Signal.error([
+          'The Bitbucket service returned an error. <b>Please check your user ID and account</b>.',
+          `Detail: ${error.message}`]);
       }
-      return q.Signal.error([
-        'The Bitbucket service returned an error. <b>Please check your user ID and account</b>.',
-        `Detail: ${error.message}`]);
     });
   }
 }
