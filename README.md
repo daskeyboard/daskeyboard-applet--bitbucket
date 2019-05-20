@@ -7,11 +7,11 @@ It gives you a central place to manage git repositories, collaborate on your sou
 
 For more information about Bitbucket visit <https://www.bitbucket.com>.
 
-[GitHub repository](https://github.com/daskeyboard/daskeyboard-applet--bitbucket)
-
 ![Bitbucket applet on a Das Keyboard Q](assets/image.png "Das Keyboard Bitbucket applet")
 
 This applet uses Bitbucket [API](https://developer.atlassian.com/bitbucket/api/2/reference/).
+
+[GitHub repository](https://github.com/daskeyboard/daskeyboard-applet--bitbucket)
 
 ## Changelog
 
