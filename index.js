@@ -6,8 +6,8 @@ const queryUrlBase = 'https://api.bitbucket.org/2.0';
 class Bitbucket extends q.DesktopApp {
   constructor() {
     super();
-    // run every mintutes
-    this.pollingInterval = 60 * 1000;
+    // run every 30 secondes
+    this.pollingInterval = 30 * 1000;
   }
 
   async applyConfig() {
@@ -35,7 +35,7 @@ class Bitbucket extends q.DesktopApp {
           this.updated_on[project.name] = project.updated_on;
 
           // Initialise pull requests number
-          if(this.config["pullRequests"]){
+          if((this.config.trigger != "updates")){
             await this.getPullRequests(project.slug).then(pullrequest => {
               this.pullrequestNumber[project.name] = pullrequest.size;
             });
@@ -44,7 +44,7 @@ class Bitbucket extends q.DesktopApp {
 
         logger.info("This is the initialised updated_on board: "+JSON.stringify(this.updated_on));
 
-        if(this.config["pullRequests"]){
+        if((this.config.trigger != "updates")){
           logger.info("This is the pull request number board: "+JSON.stringify(this.pullrequestNumber));
         }
 
@@ -102,7 +102,7 @@ class Bitbucket extends q.DesktopApp {
         // logger.info("Testing update on: "+JSON.stringify(project.name));
 
         // Test if a project has been updated
-        if(project.updated_on > this.updated_on[project.name]){
+        if( (project.updated_on > this.updated_on[project.name]) && (this.config.trigger != "pullrequests")){
 
           // Need to send a signal         
           triggered=true;
@@ -113,7 +113,7 @@ class Bitbucket extends q.DesktopApp {
           this.updated_on[project.name] = project.updated_on;
 
           // Update signal's message
-          message.push(`Update in ${project.name} project.`);
+          message.push(`Update in <b>${project.name}</b> project.`);
 
           logger.info("This is the link: " + project.links.html.href);
           this.url = project.links.html.href;
@@ -131,7 +131,7 @@ class Bitbucket extends q.DesktopApp {
          }
 
          // Test if there is a new pull request
-         if(this.config["pullRequests"]){
+         if((this.config.trigger != "updates")){
           body = await this.getPullRequests(project.slug);
           // logger.info("Current pull request number: "+JSON.stringify(body.size));
           // logger.info("Old pull request number: "+this.pullrequestNumber[project.name]);
@@ -142,7 +142,7 @@ class Bitbucket extends q.DesktopApp {
             // Need to send a signal         
             triggered=true;
             // Update signal's message
-            message.push(`New pull request in ${project.name} project.`);
+            message.push(`New pull request in <b>${project.name}</b> project.`);
             // Need to update link
             this.url = body.values[0].links.html.href;
           }
