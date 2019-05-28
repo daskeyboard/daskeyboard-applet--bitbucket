@@ -133,8 +133,8 @@ class Bitbucket extends q.DesktopApp {
          // Test if there is a new pull request
          if(this.config["pullRequests"]){
           body = await this.getPullRequests(project.slug);
-          logger.info("Current pull request number: "+JSON.stringify(body.size));
-          logger.info("Old pull request number: "+this.pullrequestNumber[project.name]);
+          // logger.info("Current pull request number: "+JSON.stringify(body.size));
+          // logger.info("Old pull request number: "+this.pullrequestNumber[project.name]);
 
           // If there is a pull request at least
           if(body.size > this.pullrequestNumber[project.name]){
@@ -145,6 +145,7 @@ class Bitbucket extends q.DesktopApp {
             message.push(`New pull request in ${project.name} project.`);
             // Need to update link
             logger.info("This is the link: " + JSON.stringify(body.values[0].links.html));
+            logger.info("This is the message's url: " + body.values[0].links.html);
             this.url = body.values[0].links.html;
           }
 
@@ -156,6 +157,7 @@ class Bitbucket extends q.DesktopApp {
 
 
       if (triggered) {
+        logger.info("Got udpate. Sending signal.");
         return new q.Signal({
           points: [
             [new q.Point(this.config.color, this.config.effect)]
@@ -168,7 +170,6 @@ class Bitbucket extends q.DesktopApp {
           },
         });
       } else {
-        logger.info("None udpate received.");
         return null;
       }
     }).catch(error => {
