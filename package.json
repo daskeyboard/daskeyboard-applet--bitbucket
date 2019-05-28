@@ -52,11 +52,25 @@
         "controlType": "textbox"
       },
       {
-        "key": "pullRequests",
-        "label": "Pull request",
+        "key": "trigger",
+        "label": "Choose trigger type",
+        "required": true,
         "order": 2,
-        "required": false,
-        "controlType": "checkbox"
+        "controlType": "dropdown",
+        "options": [
+          {
+            "key": "updates",
+            "value": "Repository updates"
+          },
+          {
+            "key": "pullrequests",
+            "value": "Pull requests"
+          },
+          {
+            "key": "updatesandpullrequests",
+            "value": "Updates & Pull requests"
+          }
+        ]
       },
       {
         "key": "color",
