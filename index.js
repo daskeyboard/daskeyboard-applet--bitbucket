@@ -1,5 +1,5 @@
 const q = require('daskeyboard-applet');
-
+const request = require('request-promise');
 const logger = q.logger;
 const queryUrlBase = 'https://api.bitbucket.org/2.0';
 
@@ -64,16 +64,27 @@ class Bitbucket extends q.DesktopApp {
   // Get all the user projects
   async getAllProjects() {
     const query = `/repositories/${this.userName}`;
-    const proxyRequest = new q.Oauth2ProxyRequest({
-      apiKey: this.authorization.apiKey,
-      uri: queryUrlBase + query
+    logger.info("My query is: " + query);
+    return request.get({
+      url: queryUrlBase + query,
+      headers: {
+        "user": `${this.userName}:${this.password}`,
+      },
+      qs: {
+        "user": `${this.userName}:${this.password}`,
+      }
     });
-    return this.oauth2ProxyRequest(proxyRequest);
+    // const query = `/repositories/${this.userName}`;
+    // const proxyRequest = new q.Oauth2ProxyRequest({
+    //   apiKey: this.authorization.apiKey,
+    //   uri: queryUrlBase + query
+    // });
+    // return this.oauth2ProxyRequest(proxyRequest);
   }
 
   // Get the pull request
   async getPullRequests(repoSlug) {
-    const query = `/repositories/${this.userName}/${repoSlug}/pullrequests`;
+    const query = `/repositories/${userName}/${repoSlug}/pullrequests`;
     logger.info("This is the query: "+query);
     const proxyRequest = new q.Oauth2ProxyRequest({
       apiKey: this.authorization.apiKey,
