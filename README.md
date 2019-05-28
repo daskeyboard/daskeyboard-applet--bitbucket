@@ -1,6 +1,6 @@
 # Q Applet: Bitbucket
 
-Displays Bitbucket projects activities (updates, pull requests, etc.) on a Das Keyboard Q Series.
+Displays Bitbucket public projects activities (updates, pull requests) on a Das Keyboard Q Series.
 
 Bitbucket is our Git repository management solution designed for professional teams.
 It gives you a central place to manage git repositories, collaborate on your source code
