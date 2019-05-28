@@ -99,7 +99,7 @@ class Bitbucket extends q.DesktopApp {
           this.updated_on[project.name] = project.updated_on;
         }
 
-        logger.info("Testing update on: "+JSON.stringify(project.name));
+        // logger.info("Testing update on: "+JSON.stringify(project.name));
 
         // Test if a project has been updated
         if(project.updated_on > this.updated_on[project.name]){
@@ -144,8 +144,6 @@ class Bitbucket extends q.DesktopApp {
             // Update signal's message
             message.push(`New pull request in ${project.name} project.`);
             // Need to update link
-            logger.info("This is the link: " + JSON.stringify(body.values[0].links.html));
-            logger.info("This is the message's url: " + body.values[0].links.html.href);
             this.url = body.values[0].links.html.href;
           }
 
