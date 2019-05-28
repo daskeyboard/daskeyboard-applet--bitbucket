@@ -30,15 +30,14 @@
   },
   "author": "Das Keyboard",
   "dependencies": {
-    "daskeyboard-applet": "^2.11.4"
+    "daskeyboard-applet": "^2.11.4",
+    "request-promise": "^4.2.2"
+
   },
   "qConfig": {
     "geometry": {
       "width": 1,
       "height": 1
-    },
-    "authorization": {
-      "type": "oauth2"
     },
     "questions": [
       {
@@ -48,6 +47,16 @@
         "supportUrl": "https://bitbucket.org",
         "required": true,
         "placeholder": "e.g: JohnDoe",
+        "order": 1,
+        "controlType": "textbox"
+      },
+      {
+        "key": "password",
+        "label": "App password",
+        "help": "Login to your Bitbucket account. Go to settings and copy the username.",
+        "supportUrl": "https://bitbucket.org",
+        "required": true,
+        "placeholder": "e.g: 1561df1d65132d",
         "order": 1,
         "controlType": "textbox"
       },
