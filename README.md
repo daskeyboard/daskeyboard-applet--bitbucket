@@ -2,8 +2,8 @@
 
 Displays Bitbucket public projects activities (updates, pull requests) on a Das Keyboard Q Series.
 
-Bitbucket is our Git repository management solution designed for professional teams.
-It gives you a central place to manage git repositories, collaborate on your source code
+Bitbucket is a Git repository management solution designed for professional teams.
+It gives teams one place to plan projects, collaborate on code, test, and deploy.
 
 For more information about Bitbucket visit <https://www.bitbucket.com>.
 
