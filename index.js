@@ -145,8 +145,8 @@ class Bitbucket extends q.DesktopApp {
             message.push(`New pull request in ${project.name} project.`);
             // Need to update link
             logger.info("This is the link: " + JSON.stringify(body.values[0].links.html));
-            logger.info("This is the message's url: " + body.values[0].links.html);
-            this.url = body.values[0].links.html;
+            logger.info("This is the message's url: " + body.values[0].links.html.href);
+            this.url = body.values[0].links.html.href;
           }
 
           // Need to update value
