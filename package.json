@@ -57,6 +57,7 @@
         "required": true,
         "order": 2,
         "controlType": "dropdown",
+        "value": "updates",
         "options": [
           {
             "key": "updates",
