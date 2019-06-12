@@ -1,7 +1,7 @@
 {
   "name": "daskeyboard-applet--bitbucket",
   "displayName": "Bitbucket",
-  "version": "1.0.0",
+  "version": "1.0.0-beta",
   "description": "Displays Bitbucket notifications.",
   "longDescription": "Get a visual notification on your Das Keyboard Q series when there is a new Bitbucket action.",
   "officialProductName": "Bitbucket",
