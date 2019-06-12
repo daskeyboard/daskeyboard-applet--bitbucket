@@ -64,7 +64,21 @@ class Bitbucket extends q.DesktopApp {
   // Get all the user projects
   async getAllProjects() {
     const query = `/repositories/${this.userName}`;
+    logger.info("This is the query for getAllProjects(): "+query);
     const proxyRequest = new q.Oauth2ProxyRequest({
+      apiKey: this.authorization.apiKey,
+      uri: queryUrlBase + query
+    });
+    const response =  this.oauth2ProxyRequest(proxyRequest);
+    if(response){
+      logger.info("This is the first response: "+response);
+      // return response;
+    }
+    proxyRequest.refreshOauth2AccessToken().then(proxyResponse => {
+      logger.info("This is the proxyResponse"+JSON.stringify(proxyResponse));
+      logger.info("Here, need to update the authorization key.");
+    });
+    proxyRequest = new q.Oauth2ProxyRequest({
       apiKey: this.authorization.apiKey,
       uri: queryUrlBase + query
     });
@@ -74,8 +88,21 @@ class Bitbucket extends q.DesktopApp {
   // Get the pull request
   async getPullRequests(repoSlug) {
     const query = `/repositories/${this.userName}/${repoSlug}/pullrequests`;
-    logger.info("This is the query: "+query);
+    logger.info("This is the query for getPullRequests(): "+query);
     const proxyRequest = new q.Oauth2ProxyRequest({
+      apiKey: this.authorization.apiKey,
+      uri: queryUrlBase + query
+    });
+    const response =  this.oauth2ProxyRequest(proxyRequest);
+    if(response){
+      logger.info("This is the first response: "+response);
+      // return response;
+    }
+    proxyRequest.refreshOauth2AccessToken().then(proxyResponse => {
+      logger.info("This is the proxyResponse "+JSON.stringify(proxyResponse));
+      logger.info("Here, need to update the authorization key.");
+    });
+    proxyRequest = new q.Oauth2ProxyRequest({
       apiKey: this.authorization.apiKey,
       uri: queryUrlBase + query
     });
@@ -173,6 +200,7 @@ class Bitbucket extends q.DesktopApp {
     }).catch(error => {
       logger.error(
         `Got error sending request to service: ${JSON.stringify(error)}`);
+      
       if(`${error.message}`.includes("getaddrinfo")){
         // Do not send signal error when getting internet connection error.
         // return q.Signal.error(
