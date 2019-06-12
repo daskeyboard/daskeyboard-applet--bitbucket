@@ -71,7 +71,7 @@ class Bitbucket extends q.DesktopApp {
     });
     const response =  this.oauth2ProxyRequest(proxyRequest);
     if(response){
-      logger.info("This is the first response: "+response);
+      logger.info("This is the first response: "+JSON.stringify(response));
       // return response;
     }
     proxyRequest.refreshOauth2AccessToken().then(proxyResponse => {
