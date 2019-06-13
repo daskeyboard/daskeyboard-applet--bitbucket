@@ -89,6 +89,8 @@ class Bitbucket extends q.DesktopApp {
     // Otherwise try to refresh token
     const proxyRequestTest = new q.Oauth2ProxyRequest({
       apiKey: this.authorization.apiKey,
+      uri: 'https://bitbucket.org/site/oauth2/access_token'
+
     })
     proxyRequestTest.refreshOauth2AccessToken().then(proxyResponse => {
       logger.info("This is the proxyResponse"+JSON.stringify(proxyResponse));
@@ -119,6 +121,7 @@ class Bitbucket extends q.DesktopApp {
     // Otherwise try to refresh token
     const proxyRequestTest = new q.Oauth2ProxyRequest({
       apiKey: this.authorization.apiKey,
+      uri: 'https://bitbucket.org/site/oauth2/access_token'
     })
     proxyRequestTest.refreshOauth2AccessToken().then(proxyResponse => {
       logger.info("This is the proxyResponse"+JSON.stringify(proxyResponse));
