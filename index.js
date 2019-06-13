@@ -64,8 +64,9 @@ class Bitbucket extends q.DesktopApp {
 
   // Get all the user projects
   async getAllProjects() {
+    const query = `/repositories/${this.userName}`;
     let options = {
-      uri: apiUrl,
+      uri: queryUrlBase + query,
       json: true
     };
     return this.getBitbucketAccessToken().then(accessToken => {
