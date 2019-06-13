@@ -63,6 +63,18 @@ class Bitbucket extends q.DesktopApp {
 
   // Get all the user projects
   async getAllProjects() {
+
+    // return this.getBitbucketAccessToken().then(accessToken => {
+    //   // save the token
+    //   this.bitbucketAccessToken = accessToken;
+    //   // add token to request option
+    //   options = {
+    //     ...options, headers: {
+
+    //       'grant_type': 'refresh_token'
+    //     }
+    //   }
+    // })
     const query = `/repositories/${this.userName}`;
     logger.info("This is the query for getAllProjects(): "+query);
     const proxyRequest = new q.Oauth2ProxyRequest({
@@ -74,10 +86,16 @@ class Bitbucket extends q.DesktopApp {
       logger.info("This is the first response: "+JSON.stringify(response));
       // return response;
     }
-    proxyRequest.refreshOauth2AccessToken().then(proxyResponse => {
+    // Otherwise try to refresh token
+    const proxyRequestTest = new q.Oauth2ProxyRequest({
+      apiKey: this.authorization.apiKey,
+    })
+    proxyRequestTest.refreshOauth2AccessToken().then(proxyResponse => {
       logger.info("This is the proxyResponse"+JSON.stringify(proxyResponse));
       logger.info("Here, need to update the authorization key.");
     });
+
+    // Try another time to make a request
     proxyRequest = new q.Oauth2ProxyRequest({
       apiKey: this.authorization.apiKey,
       uri: queryUrlBase + query
@@ -95,13 +113,19 @@ class Bitbucket extends q.DesktopApp {
     });
     const response =  this.oauth2ProxyRequest(proxyRequest);
     if(response){
-      logger.info("This is the first response: "+response);
+      logger.info("This is the first response: "+JSON.stringify(response));
       // return response;
     }
-    proxyRequest.refreshOauth2AccessToken().then(proxyResponse => {
-      logger.info("This is the proxyResponse "+JSON.stringify(proxyResponse));
+    // Otherwise try to refresh token
+    const proxyRequestTest = new q.Oauth2ProxyRequest({
+      apiKey: this.authorization.apiKey,
+    })
+    proxyRequestTest.refreshOauth2AccessToken().then(proxyResponse => {
+      logger.info("This is the proxyResponse"+JSON.stringify(proxyResponse));
       logger.info("Here, need to update the authorization key.");
     });
+
+    // Try another time to make a request
     proxyRequest = new q.Oauth2ProxyRequest({
       apiKey: this.authorization.apiKey,
       uri: queryUrlBase + query
