@@ -1,4 +1,5 @@
 const q = require('daskeyboard-applet');
+const request = require('request-promise');
 
 const logger = q.logger;
 const queryUrlBase = 'https://api.bitbucket.org/2.0';
@@ -63,47 +64,101 @@ class Bitbucket extends q.DesktopApp {
 
   // Get all the user projects
   async getAllProjects() {
+    let options = {
+      uri: apiUrl,
+      json: true
+    };
+    return this.getBitbucketAccessToken().then(accessToken => {
+      // save the token
+      this.bitbucketAccessToken = accessToken;
+      // add token to request option
+      options = {
+        ...options, headers: {
+          'Authorization': `Bearer ${accessToken}`,
+        }
+      }
+      return request(options);
+    }).catch(err => {
+      logger.info('GOT ERROR WHEN MAKING NEW REQUEST');
+      return this.refreshBitbucketAccessToken().then(accessToken => {
+        // save the token
+        this.bitbucketAccessToken = accessToken;
+        // add token to request option
+        options = {
+          ...options, headers: {
+            'Authorization': `Bearer ${accessToken}`,
+          }
+        }
+        return request(options);
+      });
+    });
+    // const query = `/repositories/${this.userName}`;
+    // logger.info("This is the query for getAllProjects(): "+query);
+    // const proxyRequest = new q.Oauth2ProxyRequest({
+    //   apiKey: this.authorization.apiKey,
+    //   uri: queryUrlBase + query
+    // });
+    // const response =  this.oauth2ProxyRequest(proxyRequest);
+    // if(response){
+    //   logger.info("This is the first response: "+JSON.stringify(response));
+    //   // return response;
+    // }
+    // // Otherwise try to refresh token
+    // const proxyRequestTest = new q.Oauth2ProxyRequest({
+    //   apiKey: this.authorization.apiKey,
+    //   uri: 'https://bitbucket.org/site/oauth2/access_token',
+    //   method: 'POST'
 
-    // return this.getBitbucketAccessToken().then(accessToken => {
-    //   // save the token
-    //   this.bitbucketAccessToken = accessToken;
-    //   // add token to request option
-    //   options = {
-    //     ...options, headers: {
-
-    //       'grant_type': 'refresh_token'
-    //     }
-    //   }
     // })
-    const query = `/repositories/${this.userName}`;
-    logger.info("This is the query for getAllProjects(): "+query);
-    const proxyRequest = new q.Oauth2ProxyRequest({
-      apiKey: this.authorization.apiKey,
-      uri: queryUrlBase + query
-    });
-    const response =  this.oauth2ProxyRequest(proxyRequest);
-    if(response){
-      logger.info("This is the first response: "+JSON.stringify(response));
-      // return response;
+    // proxyRequestTest.refreshOauth2AccessToken().then(proxyResponse => {
+    //   logger.info("This is the proxyResponse"+JSON.stringify(proxyResponse));
+    //   logger.info("Here, need to update the authorization key.");
+    // });
+
+    // // Try another time to make a request
+    // proxyRequest = new q.Oauth2ProxyRequest({
+    //   apiKey: this.authorization.apiKey,
+    //   uri: queryUrlBase + query
+    // });
+    // return this.oauth2ProxyRequest(proxyRequest);
+  }
+
+  /**
+   * Uses the daskeyboard Oauth Proxy to get an access token from bitbucket
+   */
+  async getBitbucketAccessToken() {
+    if (!this.authorization.apiKey) {
+      throw new Error('No apiKey available');
     }
-    // Otherwise try to refresh token
-    const proxyRequestTest = new q.Oauth2ProxyRequest({
-      apiKey: this.authorization.apiKey,
-      uri: 'https://bitbucket.org/site/oauth2/access_token',
-      method: 'POST'
 
-    })
-    proxyRequestTest.refreshOauth2AccessToken().then(proxyResponse => {
-      logger.info("This is the proxyResponse"+JSON.stringify(proxyResponse));
-      logger.info("Here, need to update the authorization key.");
+    if (this.bitbucketAccessToken) {
+      return this.bitbucketAccessToken;
+    }
+
+    const proxyRequest = new q.Oauth2ProxyRequest({
+      apiKey: this.authorization.apiKey
     });
 
-    // Try another time to make a request
-    proxyRequest = new q.Oauth2ProxyRequest({
-      apiKey: this.authorization.apiKey,
-      uri: queryUrlBase + query
+    return proxyRequest.getOauth2ProxyToken().then(proxyResponse => {
+      return proxyResponse.access_token;
     });
-    return this.oauth2ProxyRequest(proxyRequest);
+  }
+
+  /**
+   * Uses daskeyboard Oauth proxy to refresh access token
+   */
+  async refreshBitbucketAccessToken() {
+    if (!this.authorization.apiKey) {
+      throw new Error('No apiKey available');
+    }
+
+    const proxyRequest = new q.Oauth2ProxyRequest({
+      apiKey: this.authorization.apiKey
+    });
+
+    return proxyRequest.refreshOauth2AccessToken().then(proxyResponse => {
+      return proxyResponse.access_token;
+    });
   }
 
   // Get the pull request
